@@ -24,7 +24,6 @@ fun App() {
                 credentials = GoogleAuthCredentials(serverId = WEB_CLIENT_ID)
             )
             appReady = true
-
         }
 
         AnimatedVisibility(

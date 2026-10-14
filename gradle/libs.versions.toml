@@ -15,8 +15,8 @@ kotlin = "2.4.20"
 material3 = "1.12.0-alpha03"
 
 navigation = "2.10.0-alpha02"
-auth = "3.0.0-alpha02"
-notifier = "2.0.0"
+auth = "3.0.6"
+notifier = "2.0.1"
 firebase = "3.0.0-alpha02"
 koin = "4.1.0"
 serialization = "1.7.3"
@@ -60,6 +60,7 @@ multiplatform-settings-make-observable = { module = "com.russhwolf:multiplatform
 # KMPAuth & KMPNotifier
 auth-kmp = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "auth" }
 auth-firebase-kmp = { module = "io.github.mirzemehdi:kmpauth-firebase", version.ref = "auth" }
+auth-firebase-google-kmp = { module = "io.github.mirzemehdi:kmpauth-firebase-google", version.ref = "auth" }
 kmpnotifier-local = { module = "io.github.mirzemehdi:kmpnotifier-local", version.ref = "notifier" }
 kmpnotifier-push = { module = "io.github.mirzemehdi:kmpnotifier-push-firebase", version.ref = "notifier" }
 messagebar-kmp = { module = "com.stevdza-san:messagebarkmp", version.ref = "messagebar" }

@@ -88,13 +88,18 @@ fun AuthScreen() {
                         result.onSuccess { user -> 
                             messageBarState.addSuccess("Authentication successful!")
                             loadingState = false    
-                        }.onFailure { exception -> 
-                            if (exception.message?.contains("A network error") == true) {
+                        }.onFailure { exception ->
+                            val message = exception.message.orEmpty()
+                            if (
+                                message.contains("canceled", ignoreCase = true) ||
+                                message.contains("cancelled", ignoreCase = true) ||
+                                message.contains("Idtoken is null", ignoreCase = true)
+                            ) {
+                                // User dismissed the Google sheet — not an app error.
+                            } else if (message.contains("A network error", ignoreCase = true)) {
                                 messageBarState.addError("Internet connection unavailable")
-                            }else if (exception.message?.contains("Idtoken is null") == true) {
-                                messageBarState.addError("Sign in canceled")
-                            }else{
-                                messageBarState.addError(exception.message ?: "Unknown")
+                            } else {
+                                messageBarState.addError(message.ifBlank { "Unknown" })
                             }
                             
                             loadingState = false
@@ -104,7 +109,7 @@ fun AuthScreen() {
                     GoogleButton(
                         loading = loadingState,
                         onClick = {
-                            loadingState = false
+                            loadingState = true
                             this@GoogleButtonUiContainerFirebase.onClick()
                         }
                     )

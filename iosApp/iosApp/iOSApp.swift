@@ -1,40 +1,44 @@
 import SwiftUI
-import GoogleSignIn
-
-
-
-@main
-struct iOSApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView().onOpenURL(perform: { url in
-               GIDSignIn.sharedInstance.handle(url)
-            })
-        }
-    }
-}
-
-import SwiftUI
-import shared
+import FirebaseCore
 import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    
     func application(
-        _ app: U IApplication,
-        open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        var handled: Bool
-        
-        handled = GIDSignIn.sharedInstance.handle(url)
-        if handled {
-            return true
+        FirebaseApp.configure()
+
+        if let clientID = FirebaseApp.app()?.options.clientID {
+            let serverClientID = Bundle.main.object(forInfoDictionaryKey: "GIDServerClientID") as? String
+            GIDSignIn.sharedInstance.configuration = GIDConfiguration(
+                clientID: clientID,
+                serverClientID: serverClientID
+            )
         }
-        
-        // Handle other custom URL types.
-        
-        // If not handled by this app, return false.
-        return false
+
+        return true
+    }
+
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        GIDSignIn.sharedInstance.handle(url)
     }
 }
 
+@main
+struct iOSApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .onOpenURL { url in
+                    GIDSignIn.sharedInstance.handle(url)
+                }
+        }
+    }
+}

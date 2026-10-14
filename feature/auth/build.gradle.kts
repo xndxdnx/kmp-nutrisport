@@ -98,6 +98,7 @@ kotlin {
             // Auth и Уведомления
             implementation(libs.auth.kmp)
             implementation(libs.auth.firebase.kmp)
+            implementation(libs.auth.firebase.google.kmp)
             implementation(libs.kmpnotifier.local)
             implementation(libs.kmpnotifier.push)
 
